@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+int i,j,le,flag,flag1,flag2;
+char str[20];
+printf("Program to show how a turing machine will process 0n1n2n\n");
+printf("Enter a string : ");
+scanf("%s",str);
+le=strlen(str);
+j=0;
+while(1)
+{
+flag=0;flag1=0;flag2=0;i=0;
+while(i<le)
+{
+if((str[i]=='0')&&(flag==0))
+{
+str[i] = 'A';
+printf("%s\n",str);
+flag=1; 
+i=i+1;
+}
+else if((str[i]=='0')&&(flag==1))
+{
+i=i+1; 
+}
+else if(str[i]=='A')
+{
+i=i+1; 
+}
+else if((str[i]=='1')&&(flag1==0))
+{
+str[i] = 'B';
+printf("%s\n",str);
+flag1=1;
+i=i+1;
+}
+else if((str[i]=='1')&&(flag1==1))
+{ i=i+1; 
+}
+else if(str[i]=='B')
+{
+i=i+1;
+}
+else if((str[i]=='2')&&(flag2==0))
+{
+str[i] ='C';
+printf("%s\n",str);
+flag2=1; 
+i=i+1;
+}
+else if((str[i]=='2')&&(flag2==1))
+{
+i=i+1; 
+}
+else if(str[i]=='C')
+{
+i=i+1; 
+} }
+j=j+1;
+if(j==le)
+{
+ break;
+} } }
