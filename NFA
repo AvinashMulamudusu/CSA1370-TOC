@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STATES 100 // Maximum number of states in the NFA
+#define MAX_ALPHABET 26 // Maximum number of symbols in the input alphabet
+
+// Define the NFA transition function
+int transition[MAX_STATES][MAX_ALPHABET][MAX_STATES];
+
+// Define the NFA start state
+int start_state;
+
+// Define the NFA accept states
+int accept_states[MAX_STATES];
+int num_accept_states;
+
+// Initialize the NFA transition function
+void initialize_transition_function() {
+    int i, j, k;
+    for (i = 0; i < MAX_STATES; i++) {
+        for (j = 0; j < MAX_ALPHABET; j++) {
+            for (k = 0; k < MAX_STATES; k++) {
+                transition[i][j][k] = -1;
+            }
+        }
+    }
+}
+
+// Add a transition to the NFA transition function
+void add_transition(int from_state, int symbol, int to_state) {
+    transition[from_state][symbol][to_state] = 1;
+}
+
+// Check if the NFA can accept the given input string
+int check_input(char* input) {
+    int current_states[MAX_STATES];
+    int next_states[MAX_STATES];
+    int i, j, k, l;
+    int num_current_states, num_next_states;
+    int input_length = strlen(input);
+
+    // Initialize the current states to be the start state
+    current_states[0] = start_state;
+    num_current_states = 1;
+
+    // Loop through the input string
+    for (i = 0; i < input_length; i++) {
+        // For each symbol in the input string, compute the next set of states
+        num_next_states = 0;
+        for (j = 0; j < num_current_states; j++) {
+            // Get the next state for the current state and input symbol
+            int from_state = current_states[j];
+            int symbol = input[i] - 'a';
+            for (k = 0; k < MAX_STATES; k++) {
+                if (transition[from_state][symbol][k] == 1) {
+                    // Add the next state to the list of next states
+                    next_states[num_next_states++] = k;
+                }
+            }
+        }
+
+        // Set the current states to be the next states
+        num_current_states = num_next_states;
+        for (l = 0; l < num_next_states; l++) {
+            current_states[l] = next_states[l];
+        }
+    }
+
+    // Check if any of the current states are accept states
+    for (i = 0; i < num_current_states; i++) {
+        for (j = 0; j < num_accept_states; j++) {
+            if (current_states[i] == accept_states[j]) {
+                return 1;
+            }
+        }
+    }
+
+    // If no accept states were reached, return 0
+    return 0;
+}
+
+int main() {
+    // Initialize the NFA
+    initialize_transition_function();
+    start_state = 0;
+    num_accept_states = 1;
+    accept_states[0] = 2;
+
+    // Add transitions to the NFA
+    add_transition(0, 0, 1);
+    add_transition(0, 0, 7);
+    add_transition(1, 1, 2);
+    add_transition(2, 2, 3);
+    add_transition(2, 2, 4);
+    add_transition(3,
